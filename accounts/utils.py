@@ -27,5 +27,11 @@ def send_verification_email(request, user, email_subject, email_template):
     mail = EmailMessage(email_subject, message, to=[to_email])
     mail.send()
 
+def send_notification(email_subject, email_template, context):
+    message = render_to_string(email_template,context)
+    to_email = context['user'].email
+    mail = EmailMessage(email_subject, message, to=[to_email])
+    mail.send()
+
 
 

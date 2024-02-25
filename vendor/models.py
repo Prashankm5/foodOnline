@@ -1,7 +1,6 @@
-from enum import unique
 from django.db import models
 from accounts.models import User, UserProfile
-from datetime import time, date, datetime
+from accounts.utils import send_notification
 
 
 class Vendor(models.Model):
@@ -16,3 +15,25 @@ class Vendor(models.Model):
 
     def __str__(self):
         return self.vendor_name
+    
+
+    def save(self, *args, **kwargs):
+        if self.pk is not None:
+            # Update
+            orig = Vendor.objects.get(pk=self.pk)
+            if orig.is_approved != self.is_approved:
+                mail_template = "accounts/emails/admin_approval_email.html"
+                context = {
+                    'user': self.user,
+                    'is_approved': self.is_approved
+                }
+                if self.is_approved == True:
+                    # send notification email
+                    mail_subject = "Congratulation! Your restaurant is approved."
+                    
+                    send_notification(mail_subject, mail_template, context)
+                else:
+                    #send notification email
+                    mail_subject = "We are sorry! You are not eligible for publishing your food menu on our marketPlace."
+                    send_notification(mail_subject, mail_template, context)
+        return super(Vendor, self).save(*args, **kwargs)
