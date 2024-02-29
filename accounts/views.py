@@ -61,7 +61,7 @@ def registerUser(request):
             email_template = "accounts/emails/accounts_verification_email.html"
             send_verification_email(request, user, email_subject, email_template)
 
-            messages.success(request, 'Your account has been registered successfully!!!')
+            messages.success(request, 'Account has been registered successfully!!! Check Your email for activation link.')
             return redirect('registerUser')
         else:
             print('Invailid form')
@@ -113,7 +113,7 @@ def registerVendor(request):
             vendor.save()
             
             
-            messages.success(request, 'Your account has been registered successfully!!!')
+            messages.success(request, 'Account has been registered successfully!!! Check Your email for activation link.')
             return redirect('registerVendor') 
     else:
         form = UserForm()
