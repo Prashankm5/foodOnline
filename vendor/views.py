@@ -83,7 +83,7 @@ def add_category(request):
             category.vendor = get_vendor(request)
             
             # category.save() # here the category id will be generated
-            category.slug = slugify(category_name)
+            category.slug = slugify(category_name)+'-'+str(category.id) # chicken-15
             category.save()
             messages.success(request, f'Category {category_name} added successfully!')
             return redirect('menu_builder')
@@ -112,7 +112,7 @@ def edit_category(request, pk=None):
             category.vendor = get_vendor(request)
             
             # category.save() # here the category id will be generated
-            category.slug = slugify(category_name)
+            category.slug = slugify(category_name)+'-'+str(category.id) # chicken-15
             category.save()
             messages.success(request, f'Category {category_name} updated successfully!')
             return redirect('menu_builder')
