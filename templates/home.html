@@ -51,8 +51,8 @@
 										<option value="25">25km</option>
 										<option value="30">30km</option>
 										<option value="35">35km</option>
-										<option value="35">50km</option>
-										<option value="35">100km</option>
+										<option value="50">50km</option>
+										<option value="100">100km</option>
 									</select>
 								</div>
 								<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
@@ -89,9 +89,9 @@
 							<li class="has-border">
 								<figure>
 									{% if vendor.user_profile.profile_picture %}
-									<a href="#"><img src="{{vendor.user_profile.profile_picture.url}}" class="attachment-full size-full wp-post-image" alt=""></a>
+									<a href="{% url 'vendor_detail' vendor.vendor_slug %}"><img src="{{vendor.user_profile.profile_picture.url}}" class="attachment-full size-full wp-post-image" alt=""></a>
 									{% else %}
-									<a href="#"><img src="{% static "images/default-profile.png" %}" class="attachment-full size-full wp-post-image" alt=""></a>
+									<a href="{% url 'vendor_detail' vendor.vendor_slug %}"><img src="{% static "images/default-profile.png" %}" class="attachment-full size-full wp-post-image" alt=""></a>
 									{% endif %}
 								</figure>
 							</li>
@@ -124,7 +124,7 @@
 								<div class="list-post featured">
 									<div class="img-holder">
 										<figure>
-											<a href="#">
+											<a href="{% url 'vendor_detail' vendor.vendor_slug %}">
 												{% if vendor.user_profile.profile_picture %}
 												<img src="{{vendor.user_profile.profile_picture.url}}" class="img-thumb wp-post-image" alt="">
 												{% else %}
@@ -137,25 +137,20 @@
 										</span>
 									</div>
 									<div class="text-holder">
-										<div class="list-rating">
-											<div class="rating-star">
-												<span class="rating-box" style="width: 100%;"></span>
-											</div>
-											<span class="reviews">(1)</span>
-										</div>
+										
 										<div class="post-title">
 											<h5>
-												<a href="listing-detail.html">{{vendor}}</a>
-												<span class="sponsored text-color">Sponsored</span>
+												<a href="{% url 'vendor_detail' vendor.vendor_slug %}">{{ vendor }}</a>
 											</h5>
 										</div>
-										{% comment %} <address> <span>Type of food : </span> Apple Juice</address> {% endcomment %}
-										{% if vendor.user_profile.city is not None %}
-										<span>{{vendor.user_profile.city}}</span>,{% endif %}
-										{% if vendor.user_profile.state is not None %}
-										<span>{{vendor.user_profile.state}}</span>{% endif %}
-										{% if vendor.user_profile.pin_code is not None %}
-										<span>{{vendor.user_profile.pin_code}}</span>{% endif %}
+										{% if vendor.user_profile.city and vendor.user_profile.state and vendor.user_profile.pin_code %}
+										<span>{{ vendor.user_profile.city }}, {{ vendor.user_profile.state }}, {{ vendor.user_profile.pin_code }}</span>
+										{% endif %}
+
+										{% if vendor.kms %}
+											<br>
+											<span><small><b>{{vendor.kms}} km </b>away</small></span>
+										{% endif %}
 									</div>
 									
 								</div>
