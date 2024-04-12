@@ -1,8 +1,10 @@
+from datetime import date
+from datetime import datetime
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from marketplace.context_processors import get_cart_amounts, get_cart_counter
 from marketplace.models import Cart
-from vendor.models import Vendor
+from vendor.models import OpeningHour, Vendor
 from menu.models import Category, FoodItem
 from django.db.models import Prefetch
 from django.contrib.auth.decorators import login_required
@@ -26,12 +28,35 @@ def marketplace(request):
 
 def vendor_detail(request, vendor_slug):
     vendor = get_object_or_404(Vendor, vendor_slug=vendor_slug)
+
     categories = Category.objects.filter(vendor=vendor).prefetch_related(
         Prefetch(
             'fooditems',
             queryset = FoodItem.objects.filter(is_available=True)
         )
     )
+
+    opening_hours = OpeningHour.objects.filter(vendor=vendor).order_by('day', '-from_hour')
+    
+    # Check current day's opening hours.
+    today_date = date.today()
+    today = today_date.isoweekday()
+    
+    current_opening_hours = OpeningHour.objects.filter(vendor=vendor, day=today)
+    now = datetime.now()
+    current_time = now.strftime( "%H:%M:%S")
+
+    is_open = None
+    for i in current_opening_hours:
+        start = str(datetime.strptime(i.from_hour, "%I:%M %p").time())
+        end = str(datetime.strptime(i.to_hour, "%I:%M %p").time())
+
+        if current_time > start and current_time < end:
+            is_open = True
+            break
+        else:
+            is_open = False
+            
     if request.user.is_authenticated:
         cart_items = Cart.objects.filter(user=request.user)
     else:
@@ -39,7 +64,10 @@ def vendor_detail(request, vendor_slug):
     context = {
         'vendor': vendor,
         'categories': categories,
-        'cart_items': cart_items
+        'cart_items': cart_items,
+        'opening_hours': opening_hours,
+        'current_opening_hours': current_opening_hours,
+        'is_open' : is_open,
     }
     return render(request, 'marketplace/vendor_detail.html', context)
 
