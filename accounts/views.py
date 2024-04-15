@@ -181,8 +181,8 @@ def myAccount(request):
 
 @login_required(login_url="login")
 @user_passes_test(test_func=ceck_role_customer)
-def custdashboard(request):
-    return render(request, 'accounts/customerDashboard.html')
+def custDashboard(request):
+    return render(request, 'accounts/custDashboard.html')
 
 @login_required(login_url="login")
 @user_passes_test(test_func=check_role_vendor)
