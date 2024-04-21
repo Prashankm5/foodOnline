@@ -145,10 +145,21 @@ $(document).ready(function(){
                         response.cart_amount['grand_total']
                     )
 
+                    // if(window.location.pathname == '/marketplace/cart/'){
+                    //     removeCartItem(response.qty, cart_id);
+                    //     checkEmptyCart();}
+                    // }
                     if(window.location.pathname == '/cart/'){
                         removeCartItem(response.qty, cart_id);
                         checkEmptyCart();
                     }
+
+                    // removeCartItem(response.qty, cart_id);
+                    // checkEmptyCart();
+
+                    // if(true){
+                    //     removeCartItem(response.qty, cart_id);
+                    //     checkEmptyCart();}
                     
                 } 
             }
