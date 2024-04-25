@@ -2,6 +2,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from accounts.forms import UserProfileForm
+from orders.models import Order, OrderedFood
 from .forms import OpeningHourForm, VendorForm
 
 from accounts.models import UserProfile
@@ -250,28 +251,28 @@ def remove_opening_hours(request, pk=None):
             return JsonResponse({'status': 'success', 'id': pk})
 
 
-# def order_detail(request, order_number):
-#     try:
-#         order = Order.objects.get(order_number=order_number, is_ordered=True)
-#         ordered_food = OrderedFood.objects.filter(order=order, fooditem__vendor=get_vendor(request))
+def order_detail(request, order_number):
+    try:
+        order = Order.objects.get(order_number=order_number, is_ordered=True)
+        ordered_food = OrderedFood.objects.filter(order=order, fooditem__vendor=get_vendor(request))
 
-#         context = {
-#             'order': order,
-#             'ordered_food': ordered_food,
-#             'subtotal': order.get_total_by_vendor()['subtotal'],
-#             'tax_data': order.get_total_by_vendor()['tax_dict'],
-#             'grand_total': order.get_total_by_vendor()['grand_total'],
-#         }
-#     except:
-#         return redirect('vendor')
-#     return render(request, 'vendor/order_detail.html', context)
+        context = {
+            'order': order,
+            'ordered_food': ordered_food,
+            'subtotal': order.get_total_by_vendor()['subtotal'],
+            'tax_data': order.get_total_by_vendor()['tax_dict'],
+            'grand_total': order.get_total_by_vendor()['grand_total'],
+        }
+    except:
+        return redirect('vendor')
+    return render(request, 'vendor/order_detail.html', context)
 
 
-# def my_orders(request):
-#     vendor = Vendor.objects.get(user=request.user)
-#     orders = Order.objects.filter(vendors__in=[vendor.id], is_ordered=True).order_by('created_at')
+def my_orders(request):
+    vendor = Vendor.objects.get(user=request.user)
+    orders = Order.objects.filter(vendors__in=[vendor.id], is_ordered=True).order_by('created_at')
 
-#     context = {
-#         'orders': orders,
-#     }
-#     return render(request, 'vendor/my_orders.html', context)
+    context = {
+        'orders': orders,
+    }
+    return render(request, 'vendor/my_orders.html', context)

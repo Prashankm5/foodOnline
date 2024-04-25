@@ -145,21 +145,16 @@ $(document).ready(function(){
                         response.cart_amount['grand_total']
                     )
 
-                    // if(window.location.pathname == '/marketplace/cart/'){
-                    //     removeCartItem(response.qty, cart_id);
-                    //     checkEmptyCart();}
-                    // }
+                    if(window.location.pathname == '/marketplace/cart/'){
+                        removeCartItem(response.qty, cart_id);
+                        checkEmptyCart();}
+                    
                     if(window.location.pathname == '/cart/'){
                         removeCartItem(response.qty, cart_id);
                         checkEmptyCart();
                     }
 
-                    // removeCartItem(response.qty, cart_id);
-                    // checkEmptyCart();
-
-                    // if(true){
-                    //     removeCartItem(response.qty, cart_id);
-                    //     checkEmptyCart();}
+                    
                     
                 } 
             }
@@ -220,7 +215,8 @@ $(document).ready(function(){
 
     // apply cart amounts
     function applyCartAmounts(subtotal, tax_dict, grand_total){
-        if(window.location.pathname == '/cart/'){
+        if((window.location.pathname == '/marketplace/cart/') || (window.location.pathname == '/cart/')){
+        // if(window.location.pathname == '/cart/'){
             $('#subtotal').html(subtotal)
             $('#total').html(grand_total)
 
