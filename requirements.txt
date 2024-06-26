@@ -1,0 +1,18 @@
+asgiref==3.8.1
+certifi==2024.6.2
+charset-normalizer==3.3.2
+Django==5.0.6
+django-json==0.27
+GDAL @ file:///D:/Users/91727/D%20Drive/Desktop/Django%20Project/Multi_vender_Restaurant/GDAL-3.4.3-cp310-cp310-win_amd64.whl
+idna==3.7
+pillow==10.3.0
+psycopg==3.1.19
+psycopg2-binary==2.9.9
+python-decouple==3.8
+razorpay==1.4.2
+requests==2.32.3
+simplejson==3.19.2
+sqlparse==0.5.0
+typing_extensions==4.12.2
+tzdata==2024.1
+urllib3==2.2.2

@@ -1,0 +1,1 @@
+web: gunicorn foodOnline_main.wesgi --log-file
